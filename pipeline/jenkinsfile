@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = 'php_app'
+    }
+
     triggers {
         pollSCM('* * * * *') // Poll every minute
     }
@@ -17,7 +21,18 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image and tag it with the build ID
-                    def dockerImage = docker.build("php_app:${env.BUILD_ID}")
+                    docker.build("${DOCKER_IMAGE}:${env.BUILD_ID}")
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // Run the Docker container and perform a health check
+                    docker.image("${DOCKER_IMAGE}:${env.BUILD_ID}").inside {
+                        sh 'php --version' // Example command to check PHP version
+                    }
                 }
             }
         }
