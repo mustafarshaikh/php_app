@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = 'your-dockerhub-username/php-app:latest'
+    }
+
+    triggers {
+        pollSCM('* * * * *')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Pull the latest code from the repository
+                git branch: 'main', url: 'https://github.com/username/repo.git'
+            }
+        }
