@@ -24,8 +24,7 @@ COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 COPY php-config.ini /usr/local/etc/php/php.ini
 
 # Enable Apache mods
-RUN a2enmod rewrite
-
+RUN a2enmod rewrite headers
 # Security: Create a non-root user
 RUN useradd -m -u 1000 phpuser
 # USER phpuser
