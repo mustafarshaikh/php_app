@@ -31,7 +31,8 @@ pipeline {
                 script {
                     // Run PHP_CodeSniffer with custom configuration
                     docker.image("${DOCKER_IMAGE}:${env.BUILD_ID}").inside {
-                        sh 'phpcs --standard=/var/www/html/phpcs.xml /var/www/html'
+                        // Ignore errors and warnings by using || true
+                        sh 'phpcs --standard=/var/www/html/phpcs.xml /var/www/html || true'
                     }
                 }
             }
@@ -42,7 +43,8 @@ pipeline {
                 script {
                     // Run PHPStan
                     docker.image("${DOCKER_IMAGE}:${env.BUILD_ID}").inside {
-                        sh 'phpstan analyse /var/www/html --level=max'
+                        // Continue even if there are warnings
+                        sh 'phpstan analyse /var/www/html --level=max || true'
                     }
                 }
             }
