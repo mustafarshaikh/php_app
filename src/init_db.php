@@ -19,7 +19,7 @@ $sql = "CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(50)
 )";
 
-if ($conn->query($sql) === TRUE) {
+if ($conn->query($sql) === true) {
     echo "Table users created successfully";
 } else {
     echo "Error creating table: " . $conn->error;
@@ -28,7 +28,7 @@ if ($conn->query($sql) === TRUE) {
 // Insert sample data
 $sql = "INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com'), ('Jane Smith', 'jane@example.com')";
 
-if ($conn->query($sql) === TRUE) {
+if ($conn->query($sql) === true) {
     echo "New records created successfully";
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
