@@ -12,5 +12,14 @@ pipeline {
                 git branch: 'main', credentialsId: 'localjenkins', url: 'git@github.com:mustafarshaikh/php_app.git'
             }
         }
+
+        stage('Build') {
+            steps {
+                script {
+                    // Build the Docker image and tag it with the build ID
+                    def dockerImage = docker.build("php_app:${env.BUILD_ID}")
+                }
+            }
+        }
     }
 }
