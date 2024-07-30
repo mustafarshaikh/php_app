@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Pull the latest code from the repository
-                git branch: 'main', credentialsId: 'your-credentials-id', url: 'git@github.com:username/repo.git'
+                git branch: 'main', credentialsId: 'localjenkins', url: 'git@github.com:mustafarshaikh/php_app.git'
             }
         }
     }
