@@ -26,6 +26,28 @@ pipeline {
             }
         }
 
+        stage('Lint') {
+            steps {
+                script {
+                    // Run PHP_CodeSniffer
+                    docker.image("${DOCKER_IMAGE}:${env.BUILD_ID}").inside {
+                        sh 'phpcs /var/www/html'
+                    }
+                }
+            }
+        }
+
+        stage('Static Analysis') {
+            steps {
+                script {
+                    // Run PHPStan
+                    docker.image("${DOCKER_IMAGE}:${env.BUILD_ID}").inside {
+                        sh 'phpstan analyse /var/www/html --level=max'
+                    }
+                }
+            }
+        }
+
         stage('Test') {
             steps {
                 script {

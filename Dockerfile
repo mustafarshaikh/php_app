@@ -7,6 +7,15 @@ RUN apt-get update && \
     docker-php-ext-install mysqli pdo pdo_mysql && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    
+# Install PHP_CodeSniffer and PHPStan
+RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar && \
+    curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar && \
+    curl -OL https://phpstan.org/phpstan.phar && \
+    chmod +x phpcs.phar phpcbf.phar phpstan.phar && \
+    mv phpcs.phar /usr/local/bin/phpcs && \
+    mv phpcbf.phar /usr/local/bin/phpcbf && \
+    mv phpstan.phar /usr/local/bin/phpstan
 
 # Copy Apache config
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
