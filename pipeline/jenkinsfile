@@ -29,9 +29,9 @@ pipeline {
         stage('Lint') {
             steps {
                 script {
-                    // Run PHP_CodeSniffer
+                    // Run PHP_CodeSniffer with custom configuration
                     docker.image("${DOCKER_IMAGE}:${env.BUILD_ID}").inside {
-                        sh 'phpcs /var/www/html'
+                        sh 'phpcs --standard=/var/www/html/phpcs.xml /var/www/html'
                     }
                 }
             }
