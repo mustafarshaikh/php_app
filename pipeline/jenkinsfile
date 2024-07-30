@@ -36,5 +36,18 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    // Deploy the application using Docker run command
+                    sh """
+                    docker stop php_app || true
+                    docker rm php_app || true
+                    docker run -d --name php_app -p 80:80 ${DOCKER_IMAGE}:${env.BUILD_ID}
+                    """
+                }
+            }
+        }
     }
 }
