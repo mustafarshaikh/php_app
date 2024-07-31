@@ -5,9 +5,9 @@ USER root
 RUN apt-get update && \
     apt-get install -y --no-install-recommends iptables && \
     docker-php-ext-install mysqli pdo pdo_mysql && \
+    docker-php-ext-enable pdo_mysql && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-    
 # Install PHP_CodeSniffer and PHPStan
 RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar && \
     curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar && \
@@ -36,7 +36,7 @@ EXPOSE 80
 COPY src /var/www/html/
 
 # Switch back to non-root user
-USER phpuser
+# USER phpuser
 
 # Start Apache in the foreground
 CMD ["apache2-foreground"]

@@ -9,7 +9,7 @@
     <p>This is a simple PHP application that connects to a MySQL database.</p>
 
     <?php
-    $servername = "mysql-1";
+    $servername = "mysql";
     $username = "root";
     $password = "root_password";
     $dbname = "my_database";
