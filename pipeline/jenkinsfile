@@ -91,10 +91,18 @@ pipeline {
             steps {
                 script {
                     // Verify the PHP application can connect to MySQL
-                    sh """
-                    sleep 10 # Give the container some time to start and connect
-                    docker exec php_app curl -v -f http://localhost/
-                    """
+                    def responseCode = sh(
+                        script: """
+                        sleep 10 # Give the container some time to start and connect
+                        docker exec php_app curl -s -o /dev/null -w "%{http_code}" http://localhost/
+                        """,
+                        returnStdout: true
+                    ).trim()
+                    if (responseCode != '200') {
+                        error("HTTP response code is not 200: ${responseCode}")
+                    } else {
+                        echo "HTTP response code is 200: OK"
+                    }
                 }
             }
         }
