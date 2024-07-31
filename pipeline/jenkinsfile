@@ -86,7 +86,20 @@ pipeline {
             }
         }
 
-
+        stage('Configure Firewall') {
+            steps {
+                script {
+                    // Configure iptables rules
+                    sh """
+                    docker exec php_app iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+                    // docker exec php_app iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+                    docker exec php_app iptables -P INPUT DROP
+                    docker exec php_app iptables -P FORWARD DROP
+                    docker exec php_app iptables -P OUTPUT ACCEPT
+                    """
+                }
+            }
+        }
         stage('Verify Connection') {
             steps {
                 script {
