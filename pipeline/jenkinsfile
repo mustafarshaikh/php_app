@@ -59,6 +59,12 @@ pipeline {
         }
 
         stage('Deploy') {
+            environment {
+                MYSQL_USERNAME = credentials('MYSQL_USERNAME')
+                MYSQL_PASSWORD = credentials('MYSQL_PASSWORD')
+                MYSQL_DB = credentials('MYSQL_DB')
+                MYSQL_HOST = credentials('MYSQL_HOST')
+            }
             steps {
                 script {
                     // Stop and remove any existing PHP application container
@@ -67,18 +73,19 @@ pipeline {
                     docker rm php_app || true
                     """
 
-                    // Run the new PHP application container
+                    // Run the new PHP application container with environment variables
                     sh """
-                    docker run -d --name php_app -p 80:80 ${DOCKER_IMAGE}:${env.BUILD_ID}
-                    """
-
-                    // Connect the PHP application container to the infra_default network
-                    sh """
-                    docker network connect ${DOCKER_NETWORK} php_app
+                    docker run -d --name php_app --network ${DOCKER_NETWORK} -p 80:80 \
+                        -e MYSQL_USERNAME=${MYSQL_USERNAME} \
+                        -e MYSQL_PASSWORD=${MYSQL_PASSWORD} \
+                        -e MYSQL_DB=${MYSQL_DB} \
+                        -e MYSQL_HOST=${MYSQL_HOST} \
+                        ${DOCKER_IMAGE}:${env.BUILD_ID}
                     """
                 }
             }
         }
+
 
         stage('Verify Connection') {
             steps {
@@ -86,7 +93,7 @@ pipeline {
                     // Verify the PHP application can connect to MySQL
                     sh """
                     sleep 10 # Give the container some time to start and connect
-                    docker exec php_app curl -f http://localhost/
+                    docker exec php_app curl -v -f http://localhost/
                     """
                 }
             }

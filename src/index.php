@@ -9,10 +9,10 @@
     <p>This is a simple PHP application that connects to a MySQL database.</p>
 
     <?php
-    $servername = "mysql";
-    $username = "root";
-    $password = "root_password";
-    $dbname = "my_database";
+    $servername = getenv('MYSQL_HOST');
+    $username = getenv('MYSQL_USERNAME');
+    $password = getenv('MYSQL_PASSWORD');
+    $dbname = getenv('MYSQL_DB');
     // echo "<p>Connected successfully</p>";
     // Create connection
     $conn = new mysqli($servername, $username, $password, $dbname);
