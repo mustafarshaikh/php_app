@@ -40,7 +40,7 @@ pipeline {
                 script {
                     // Run PHPStan
                     docker.image("${DOCKER_IMAGE}:${env.BUILD_ID}").inside {
-                        // Continue even if there are warnings
+                        // Continue even if there a  re warnings
                         sh 'phpstan analyse /var/www/html --level=max || true'
                     }
                 }
