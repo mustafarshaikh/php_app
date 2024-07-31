@@ -61,11 +61,32 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Deploy the application using Docker run command
+                    // Stop and remove any existing PHP application container
                     sh """
                     docker stop php_app || true
                     docker rm php_app || true
-                    docker run -d --name php_app --network ${DOCKER_NETWORK} -p 80:80 ${DOCKER_IMAGE}:${env.BUILD_ID}
+                    """
+
+                    // Run the new PHP application container
+                    sh """
+                    docker run -d --name php_app -p 80:80 ${DOCKER_IMAGE}:${env.BUILD_ID}
+                    """
+
+                    // Connect the PHP application container to the infra_default network
+                    sh """
+                    docker network connect ${DOCKER_NETWORK} php_app
+                    """
+                }
+            }
+        }
+
+        stage('Verify Connection') {
+            steps {
+                script {
+                    // Verify the PHP application can connect to MySQL
+                    sh """
+                    sleep 10 # Give the container some time to start and connect
+                    docker exec php_app curl -f http://localhost/
                     """
                 }
             }
