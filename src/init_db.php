@@ -1,5 +1,5 @@
 <?php
-$servername = "mysql";
+$servername = "mysql-1";
 $username = "my_user";
 $password = "my_password";
 $dbname = "my_database";
@@ -26,7 +26,7 @@ if ($conn->query($sql) === true) {
 }
 
 // Insert sample data
-$sql = "INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com'), ('Jane Smith', 'jane@example.com')";
+$sql = "INSERT INTO users (name, email) VALUES ('Mustafa', 'mustafarshaikh@gmail.com'), ('Raza', 'rshaikhm@gmail.com')";
 
 if ($conn->query($sql) === true) {
     echo "New records created successfully";
