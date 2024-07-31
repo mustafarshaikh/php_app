@@ -17,12 +17,15 @@ RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar && \
     mv phpcbf.phar /usr/local/bin/phpcbf && \
     mv phpstan.phar /usr/local/bin/phpstan
 
+
 # Copy Apache config
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 # Copy PHP config
 COPY php-config.ini /usr/local/etc/php/php.ini
-
+# Copy the iptables configuration script
+COPY iptables.sh /usr/local/bin/iptables.sh
+RUN chmod +x /usr/local/bin/iptables.sh
 # Enable Apache mods
 RUN a2enmod rewrite headers
 # Security: Create a non-root user
@@ -35,8 +38,7 @@ EXPOSE 80
 # Copy application files
 COPY src /var/www/html/
 
-# Switch back to non-root user
-# USER phpuser
+USER phpuser
 
-# Start Apache in the foreground
-CMD ["apache2-foreground"]
+# Start the container with the iptables script
+CMD ["/usr/local/bin/iptables.sh"]
