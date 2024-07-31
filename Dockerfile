@@ -36,7 +36,7 @@ EXPOSE 80
 COPY src /var/www/html/
 
 # Switch back to non-root user
-# USER phpuser
+USER phpuser
 
 # Start Apache in the foreground
 CMD ["apache2-foreground"]
