@@ -37,7 +37,7 @@ EXPOSE 80
 
 # Copy application files
 COPY src /var/www/html/
-
+ 
 USER phpuser
 
 # Start the container with the iptables script
