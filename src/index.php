@@ -10,8 +10,8 @@
 
     <?php
     $servername = "mysql-1";
-    $username = "my_user";
-    $password = "my_password";
+    $username = "root";
+    $password = "root_password";
     $dbname = "my_database";
     // echo "<p>Connected successfully</p>";
     // Create connection
