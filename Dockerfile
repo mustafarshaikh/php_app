@@ -18,7 +18,7 @@ RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar && \
     mv phpstan.phar /usr/local/bin/phpstan
 
 
-# Copy Apache config
+# Copy A pache config
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 # Copy PHP config
